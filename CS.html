@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Learning Simulator</title>
+    <style>
+        :root {
+            --color-primary: #0f9d58;
+            --color-primary-light: #0f9d58;
+            --color-success: #27ae60;
+            --color-warning: #f39c12;
+            --color-danger: #e74c3c;
+            --color-bg: #ecf0f1;
+            --color-text: #2c3e50;
+            --color-white: #ffffff;
+            --color-border: #bdc3c7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            color: var(--color-white);
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr 300px;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .sidebar {
+            background: var(--color-white);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .sidebar h3 {
+            color: var(--color-primary);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: 10px;
+        }
+
+        .nav-item {
+            padding: 10px 15px;
+            margin: 8px 0;
+            background: var(--color-bg);
+            border: 2px solid transparent;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            background: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .nav-item.active {
+            background: var(--color-primary);
+            color: var(--color-white);
+            border-color: var(--color-primary-light);
+        }
+
+        .content {
+            background: var(--color-white);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            min-height: 600px;
+        }
+
+        .content h2 {
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: 10px;
+        }
+
+        .content h3 {
+            color: var(--color-primary-light);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .scenario-card {
+            background: var(--color-bg);
+            padding: 20px;
+            border-left: 4px solid var(--color-primary);
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .quiz-question {
+            background: var(--color-bg);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 4px solid var(--color-warning);
+        }
+
+        .option {
+            padding: 12px;
+            margin: 10px 0;
+            background: var(--color-white);
+            border: 2px solid var(--color-border);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: var(--color-primary);
+            background: #f9f9f9;
+        }
+
+        .option.selected {
+            background: var(--color-primary);
+            color: var(--color-white);
+            border-color: var(--color-primary);
+        }
+
+        .option.correct {
+            background: var(--color-success);
+            color: var(--color-white);
+            border-color: var(--color-success);
+        }
+
+        .option.incorrect {
+            background: var(--color-danger);
+            color: var(--color-white);
+            border-color: var(--color-danger);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-light);
+        }
+
+        .btn-success {
+            background: var(--color-success);
+            color: var(--color-white);
+        }
+
+        .btn-success:hover {
+            background: #229954;
+        }
+
+        .btn-disabled {
+            background: var(--color-border);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .stats-panel {
+            background: var(--color-white);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-item {
+            margin: 15px 0;
+            padding: 15px;
+            background: var(--color-bg);
+            border-radius: 5px;
+        }
+
+        .stat-label {
+            color: var(--color-primary);
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--color-primary);
+            margin-top: 5px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: var(--color-primary);
+            color: var(--color-white);
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin: 3px;
+        }
+
+        .badge-gold {
+            background: #f39c12;
+        }
+
+        .badge-silver {
+            background: #95a5a6;
+        }
+
+        .leaderboard {
+            margin-top: 15px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .leaderboard-rank {
+            font-weight: bold;
+            color: var(--color-primary);
+            width: 30px;
+        }
+
+        .leaderboard-score {
+            color: var(--color-success);
+            font-weight: bold;
+        }
+
+        .difficulty-indicator {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 5px 0;
+        }
+
+        .difficulty-easy {
+            background: #d5f4e6;
+            color: var(--color-success);
+        }
+
+        .difficulty-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .difficulty-hard {
+            background: #f8d7da;
+            color: var(--color-danger);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: var(--color-border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--color-success);
+            transition: width 0.3s ease;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid var(--color-success);
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 4px solid var(--color-warning);
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid var(--color-danger);
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--color-primary);
+            margin: 20px 0 10px 0;
+        }
+
+        .module-progress {
+            margin: 10px 0;
+            padding: 10px;
+            background: var(--color-bg);
+            border-radius: 5px;
+        }
+
+        .feedback-message {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cybersecurity Learning Simulator</h1>
+            <p>Master Cybercrime Investigation & Digital Forensics Through Interactive Scenarios</p>
+        </header>
+
+        <div class="main-grid">
+            <!-- Sidebar Navigation -->
+            <div class="sidebar">
+                <h3>Modules</h3>
+                <div class="nav-item active" onclick="switchModule('handbook')">Handbook</div>
+                <div class="nav-item" onclick="switchModule('scenarios')">Scenarios</div>
+                <div class="nav-item" onclick="switchModule('quiz')">Quiz Challenge</div>
+                <div class="nav-item" onclick="switchModule('progress')">My Progress</div>
+                
+                <h3 style="margin-top: 30px;">Quick Stats</h3>
+                <div class="stat-item">
+                    <div class="stat-label">Points Earned</div>
+                    <div class="stat-value" id="quick-points">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Level</div>
+                    <div class="stat-value" id="quick-level">1</div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="content">
+                <!-- Handbook Section -->
+                <div id="handbook-section">
+                    <h2>Cybersecurity Handbook</h2>
+                    
+                    <div class="scenario-card">
+                        <h3>1. Phishing Attacks - Identification & Response</h3>
+                        <p><strong>What is Phishing?</strong> Phishing is a social engineering technique where attackers send fraudulent emails, messages, or create fake websites to trick victims into revealing sensitive information (passwords, credentials, financial data).</p>
+                        <p style="margin-top: 10px;"><strong>Common Signs:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>Suspicious sender email addresses (slight variations of legitimate domains)</li>
+                            <li>Urgent calls to action ("Click immediately", "Verify account")</li>
+                            <li>Requests for passwords or personal information</li>
+                            <li>Suspicious links or attachments</li>
+                            <li>Grammar and spelling errors</li>
+                            <li>Generic greetings ("Dear User" instead of real name)</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>Police Response Protocol:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>Do NOT click links or download attachments</li>
+                            <li>Report to IT security team immediately</li>
+                            <li>Preserve evidence (screenshot, email header details)</li>
+                            <li>Forward to cybercrime unit for investigation</li>
+                            <li>Alert other officers about phishing attempt</li>
+                        </ul>
+                    </div>
+
+                    <div class="scenario-card">
+                        <h3>2. Ransomware Threats - Detection & Mitigation</h3>
+                        <p><strong>What is Ransomware?</strong> Malware that encrypts critical files/systems and demands ransom payment. It disrupts operations and compromises sensitive police data.</p>
+                        <p style="margin-top: 10px;"><strong>Warning Signs:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>Unusual file extensions (.locked, .encrypted, .ransomware)</li>
+                            <li>Ransom note appearing on screen</li>
+                            <li>Inability to access files or systems</li>
+                            <li>Unusual network activity or slow performance</li>
+                            <li>Files renamed with encrypted suffixes</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>Immediate Actions:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>ISOLATE affected systems from network immediately</li>
+                            <li>Do NOT attempt to decrypt or pay ransom</li>
+                            <li>Alert IT/Cybercrime unit with system details</li>
+                            <li>Preserve evidence and system logs</li>
+                            <li>Activate incident response plan</li>
+                            <li>Restore from clean backups (if available)</li>
+                        </ul>
+                    </div>
+
+                    <div class="scenario-card">
+                        <h3>3. Telecom Analysis & CDR/IPDR Investigation</h3>
+                        <p><strong>Per Police SOP:</strong></p>
+                        <ul style="margin-left: 20px;">
+                            <li>CDR (Call Detail Records): Phone calls, SMS, time, duration, cell tower location</li>
+                            <li>IPDR (Internet Protocol Detail Records): Internet sessions, IP addresses accessed, websites visited</li>
+                            <li>CAF (Customer Application Form): KYC details - Aadhaar, PAN, address, photo, alternate mobile</li>
+                            <li>CYCAPS: Cyber Crime Analysis & Profiling System - search linked FIRs, IMEI numbers, location data</li>
+                            <li>SMS Header Analysis: Identify actual telecom provider via header at smsheader.trai.gov.in</li>
+                            <li>Day/Night Location Tracking: Cell tower data shows fraudster movement patterns vs ATM withdrawal locations</li>
+                        </ul>
+                    </div>
+
+                    <div class="scenario-card">
+                        <h3>4. Financial Crime Handles - Money Trail Tracing</h3>
+                        <p><strong>Police SOP - Key Evidence Collection:</strong></p>
+                        <ul style="margin-left: 20px;">
+                            <li><strong>Bank Accounts:</strong> Request §91 CrPC - KYC, statement, debit/credit card delivery, ATM footage</li>
+                            <li><strong>UPI Transactions:</strong> Identify payment gateway (Google Pay=okaxis.ok*, PhonePe=ybl, Amazon=apl)</li>
+                            <li><strong>E-Wallets:</strong> Transaction history, recipient wallet ID, IP logs, linked bank accounts</li>
+                            <li><strong>Crypto Exchange:</strong> Blockchain analysis, wallet addresses, exchange platform details</li>
+                            <li><strong>ATM Withdrawals:</strong> CCTV footage, ATM location codes, linked card/account numbers</li>
+                            <li><strong>Mule Account Indicators:</strong> Fake Aadhaar, recent KYC updates, e-KYC IP address mismatches</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Scenarios Section -->
+                <div id="scenarios-section" class="hidden">
+                    <h2>Real-World Investigation Scenarios (Police SOP)</h2>
+                    
+                    <div class="scenario-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h3>Scenario 1: Union Bank Phishing Fraud Investigation</h3>
+                                <p style="margin-top: 5px; color: #7f8c8d;"><strong>Victim:</strong> Rani Kumari, Karimnagar | <strong>Loss:</strong> ₹1,75,000 via UPI | <strong>Method:</strong> Phishing SMS with fake bank website. You must trace the money trail and identify the fraudster network.</p>
+                                <div class="difficulty-indicator difficulty-hard">Hard Difficulty - Real Case</div>
+                            </div>
+                            <button class="btn btn-primary" onclick="startScenario(1)">Start Investigation</button>
+                        </div>
+                    </div>
+
+                    <div class="scenario-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h3>Scenario 2: SIM Card Spoofing & Telecom Tracing</h3>
+                                <p style="margin-top: 5px; color: #7f8c8d;"><strong>Incident:</strong> Fraudster used spoofed SIM ID "UNIONBNK" to send SMS. You must identify the telecom provider, request CDR/IPDR records, and locate the fraud source.</p>
+                                <div class="difficulty-indicator difficulty-medium">Medium Difficulty - Telecom Analysis</div>
+                            </div>
+                            <button class="btn btn-primary" onclick="startScenario(2)">Start Investigation</button>
+                        </div>
+                    </div>
+
+                    <div class="scenario-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h3>Scenario 3: Mule Account & Money Laundering Trail</h3>
+                                <p style="margin-top: 5px; color: #7f8c8d;"><strong>Challenge:</strong> Trace ₹1,75,000 through: Victim → Mule Account (Bihar) → UPI Wallet → Crypto Exchange → ATM Withdrawal. Identify KYC violations and laundering techniques.</p>
+                                <div class="difficulty-indicator difficulty-hard">Hard Difficulty - Financial Forensics</div>
+                            </div>
+                            <button class="btn btn-primary" onclick="startScenario(3)">Start Investigation</button>
+                        </div>
+                    </div>
+
+                    <div id="scenario-content" class="hidden" style="margin-top: 30px; padding: 20px; background: #f0f7ff; border-radius: 8px;">
+                        <div id="scenario-text"></div>
+                        <div id="scenario-choices" style="margin-top: 20px;"></div>
+                    </div>
+                </div>
+
+                <!-- Quiz Section -->
+                <div id="quiz-section" class="hidden">
+                    <h2>Cybersecurity Knowledge Quiz</h2>
+                    <p style="margin-bottom: 20px; color: #7f8c8d;">Test your cybersecurity knowledge. Each correct answer earns you points and levels up your expertise!</p>
+                    
+                    <div id="quiz-container">
+                        <div class="quiz-question" id="question-1">
+                            <h3>Question 1: What is the most common entry point for cyber attacks on police systems?</h3>
+                            <div class="option" onclick="selectAnswer(1, 0)">A) Weak passwords and compromised credentials</div>
+                            <div class="option" onclick="selectAnswer(1, 1)">B) Only external network attacks</div>
+                            <div class="option" onclick="selectAnswer(1, 2)">C) Hardware failure</div>
+                            <div class="option" onclick="selectAnswer(1, 3)">D) Always ransomware</div>
+                            <button class="btn btn-success" style="margin-top: 15px;" onclick="submitAnswer(1, 0)">Submit Answer</button>
+                        </div>
+
+                        <div class="quiz-question" id="question-2">
+                            <h3>Question 2: What should you do if you receive a suspicious phishing email?</h3>
+                            <div class="option" onclick="selectAnswer(2, 0)">A) Click the link to verify if it's real</div>
+                            <div class="option" onclick="selectAnswer(2, 1)">B) Report to IT security and preserve evidence</div>
+                            <div class="option" onclick="selectAnswer(2, 2)">C) Forward to all colleagues as warning</div>
+                            <div class="option" onclick="selectAnswer(2, 3)">D) Delete immediately without reporting</div>
+                            <button class="btn btn-success" style="margin-top: 15px;" onclick="submitAnswer(2, 1)">Submit Answer</button>
+                        </div>
+
+                        <div class="quiz-question" id="question-3">
+                            <h3>Question 3: Which of these is NOT a sign of a ransomware attack?</h3>
+                            <div class="option" onclick="selectAnswer(3, 0)">A) Files have unusual extensions like .locked</div>
+                            <div class="option" onclick="selectAnswer(3, 1)">B) Ransom note appears on screen</div>
+                            <div class="option" onclick="selectAnswer(3, 2)">C) Normal system performance and file access</div>
+                            <div class="option" onclick="selectAnswer(3, 3)">D) Unable to open important files</div>
+                            <button class="btn btn-success" style="margin-top: 15px;" onclick="submitAnswer(3, 2)">Submit Answer</button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" style="margin-top: 20px; width: 100%;" onclick="submitAllQuiz()">Submit All Answers</button>
+                </div>
+
+                <!-- Progress Section -->
+                <div id="progress-section" class="hidden">
+                    <h2>Your Progress & Achievements</h2>
+                    
+                    <div class="module-progress">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <strong>Handbook Reading Progress</strong>
+                            <span id="handbook-percent">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="handbook-progress" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="module-progress">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <strong>Scenarios Completed</strong>
+                            <span id="scenarios-percent">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="scenarios-progress" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="module-progress">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <strong>Quiz Completion</strong>
+                            <span id="quiz-percent">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="quiz-progress" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 30px;">Your Badges & Achievements</h3>
+                    <div id="badges-container" style="margin-top: 15px;">
+                        <span class="badge">Learner</span>
+                        <span class="badge badge-silver">Quiz Master (Earn 50+ points)</span>
+                        <span class="badge badge-gold">Scenario Expert (Complete all)</span>
+                    </div>
+
+                    <h3 style="margin-top: 30px;">Leaderboard (Top Officers)</h3>
+                    <div class="leaderboard">
+                        <div class="leaderboard-item">
+                            <div><span class="leaderboard-rank">1.</span> Officer Sharma</div>
+                            <div class="leaderboard-score">850 pts</div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <div><span class="leaderboard-rank">2.</span> Officer Kumar</div>
+                            <div class="leaderboard-score">720 pts</div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <div><span class="leaderboard-rank">3.</span> You</div>
+                            <div class="leaderboard-score" id="user-points">0 pts</div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <div><span class="leaderboard-rank">4.</span> Officer Patel</div>
+                            <div class="leaderboard-score">450 pts</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Stats Panel -->
+            <div class="stats-panel">
+                <h3>Officer Profile</h3>
+                <div class="stat-item">
+                    <div class="stat-label">Total Points</div>
+                    <div class="stat-value" id="total-points">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Current Level</div>
+                    <div class="stat-value" id="current-level">1</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Rank</div>
+                    <div class="stat-value" id="current-rank">Rookie</div>
+                </div>
+
+                <h3 style="margin-top: 25px;">Rank System</h3>
+                <div style="font-size: 0.9em; color: #7f8c8d;">
+                    <p style="margin: 10px 0;"><strong>0-200 pts:</strong> Rookie</p>
+                    <p style="margin: 10px 0;"><strong>201-500 pts:</strong> Cadet</p>
+                    <p style="margin: 10px 0;"><strong>501-1000 pts:</strong> Expert</p>
+                    <p style="margin: 10px 0;"><strong>1001+ pts:</strong> Master</p>
+                </div>
+
+                <h3 style="margin-top: 25px;">Recent Activity</h3>
+                <div style="font-size: 0.9em; background: var(--color-bg); padding: 10px; border-radius: 5px;">
+                    <p id="recent-activity">Start learning to see activity</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            points: 0,
+            level: 1,
+            completedScenarios: [],
+            quizAnswers: {},
+            handbookProgress: 25
+        };
+
+        // Quiz Data
+        const quizzes = {
+            1: { correct: 0, points: 20 },
+            2: { correct: 1, points: 20 },
+            3: { correct: 2, points: 20 }
+        };
+
+        // Scenario Data - Based on Police SOP & Real Cases
+        const scenarios = {
+            1: {
+                title: "Union Bank Phishing Fraud - Money Trail Investigation",
+                desc: "Rani Kumari (Karimnagar) received SMS: 'Bank account suspended. Verify immediately' with link unionbankverify.in. She entered: account number, mobile, DOB, and OTP. ₹1,75,000 transferred via UPI. 3 hours later she filed FIR.",
+                choices: [
+                    {
+                        text: "A) File FIR immediately citing IPC §420, IT Act §66(c) - phishing & identity theft",
+                        correct: true,
+                        feedback: "CORRECT! Per SOP: File FIR within 3 hours with correct IPC/IT sections. This preserves timeline and jurisdiction.",
+                        points: 40
+                    },
+                    {
+                        text: "B) Wait for bank to contact victim before filing complaint",
+                        correct: false,
+                        feedback: "WRONG. Immediate FIR is critical to freeze accounts and initiate money traces within crucial first hours.",
+                        points: 0
+                    },
+                    {
+                        text: "C) Interview victim first, file FIR later",
+                        correct: false,
+                        feedback: "WRONG. FIR first (opens investigation), interview during S2 phase per SOP.",
+                        points: 15
+                    },
+                    {
+                        text: "D) Contact UPI provider before police registration",
+                        correct: false,
+                        feedback: "PARTIALLY. After FIR filed, yes - but FIR must come first per protocol.",
+                        points: 20
+                    }
+                ]
+            },
+            2: {
+                title: "SMS Spoofing & Telecom Analysis - Identifying Fraudster SIM",
+                desc: "SMS header analysis shows sender ID spoofed as 'UNIONBNK' but routed through VoIP. You must identify the actual telecom provider, request CDR/IPDR, and trace the SIM card used.",
+                choices: [
+                    {
+                        text: "A) Request CDR from victim's telecom - shows calls/SMS received with exact timestamp",
+                        correct: false,
+                        feedback: "PARTIAL. Victim CDR shows RECEIVED SMS, but not sender details. Need sender telecom data.",
+                        points: 15
+                    },
+                    {
+                        text: "B) Check SMS header via TRAI portal (smsheader.trai.gov.in) to identify actual telecom provider",
+                        correct: true,
+                        feedback: "CORRECT! Per SOP: SMS header reveals '2-char prefix' = telecom provider & state. Then request that provider's CDR/IPDR.",
+                        points: 35
+                    },
+                    {
+                        text: "C) Contact NPCI to reverse the UPI transaction",
+                        correct: false,
+                        feedback: "UPI reversal is separate. First identify fraudster via telecom traces.",
+                        points: 0
+                    },
+                    {
+                        text: "D) Request CCTV from Union Bank's server location",
+                        correct: false,
+                        feedback: "Bank CCTV useful later for ATM withdrawals, but SIM origin comes first.",
+                        points: 10
+                    }
+                ]
+            },
+            3: {
+                title: "Money Trail & Mule Account Forensics - Breaking the Laundering Chain",
+                desc: "Trace the ₹1,75,000: Victim → Mule in Bihar (account opened with fake Aadhaar) → UPI wallet → crypto exchange → ATM. You have 7 turns. Mistakes delay fund freeze.",
+                choices: [
+                    {
+                        text: "A) Request BANK KYC of mule account - compare Aadhaar/PAN/address for fraud indicators",
+                        correct: true,
+                        feedback: "CORRECT! Per SOP: Mule account KYC reveals fake Aadhaar, matching address in phishing test data. Flag account immediately.",
+                        points: 45
+                    },
+                    {
+                        text: "B) Check CYCAPS (Cyber Crime Analysis System) for linked FIRs against suspect phone/IMEI",
+                        correct: true,
+                        feedback: "CORRECT! CYCAPS links previous fraud cases, associates, IMEI patterns. Do this in parallel.",
+                        points: 35
+                    },
+                    {
+                        text: "C) Request wallet provider (PhonePe/Google Pay) transaction details & linked bank accounts",
+                        correct: true,
+                        feedback: "CORRECT! Identify secondary laundering. UPI wallet → crypto exchange shows intent to hide.",
+                        points: 40
+                    },
+                    {
+                        text: "D) All of the above - investigate all 3 paths simultaneously",
+                        correct: true,
+                        feedback: "BEST ANSWER! In competitive 2-player game: Officer who pursues ALL trails in parallel wins (fund freeze + suspect ID). Sequential is slower.",
+                        points: 50
+                    }
+                ]
+            }
+        };
+
+        function switchModule(module) {
+            document.querySelectorAll('[id$="-section"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById(module + '-section').classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            updateProgress();
+        }
+
+        function startScenario(scenarioNum) {
+            const scenario = scenarios[scenarioNum];
+            let choicesHTML = '';
+            
+            scenario.choices.forEach((choice, idx) => {
+                choicesHTML += `<div class="option" onclick="selectScenarioChoice(${scenarioNum}, ${idx})">
+                    ${choice.text}
+                </div>`;
+            });
+
+            document.getElementById('scenario-text').innerHTML = `
+                <h3>${scenario.title}</h3>
+                <p>${scenario.desc}</p>
+            `;
+            document.getElementById('scenario-choices').innerHTML = choicesHTML;
+            document.getElementById('scenario-content').classList.remove('hidden');
+        }
+
+        function selectScenarioChoice(scenarioNum, choiceIdx) {
+            const scenario = scenarios[scenarioNum];
+            const choice = scenario.choices[choiceIdx];
+            
+            let resultHTML = `
+                <div class="alert ${choice.correct ? 'alert-success' : 'alert-danger'}">
+                    <strong>${choice.feedback}</strong>
+                    <p style="margin-top: 10px;">Points earned: +${choice.points}</p>
+                </div>
+            `;
+            
+            if (choice.correct && !gameState.completedScenarios.includes(scenarioNum)) {
+                gameState.completedScenarios.push(scenarioNum);
+            }
+            
+            gameState.points += choice.points;
+            updateLevel();
+            updateStats();
+            
+            document.getElementById('scenario-content').innerHTML = resultHTML + `
+                <button class="btn btn-primary" onclick="switchModule('scenarios')">Back to Scenarios</button>
+            `;
+        }
+
+        function selectAnswer(questionNum, answerIdx) {
+            document.querySelectorAll(`#question-${questionNum} .option`).forEach(el => {
+                el.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            gameState.quizAnswers[questionNum] = answerIdx;
+        }
+
+        function submitAnswer(questionNum, correctIdx) {
+            const selectedIdx = gameState.quizAnswers[questionNum];
+            if (selectedIdx === undefined) {
+                alert('Please select an answer first!');
+                return;
+            }
+            
+            const isCorrect = selectedIdx === correctIdx;
+            const points = isCorrect ? 25 : 0;
+            gameState.points += points;
+            
+            const options = document.querySelectorAll(`#question-${questionNum} .option`);
+            options.forEach((el, idx) => {
+                if (idx === correctIdx) {
+                    el.classList.add('correct');
+                } else if (idx === selectedIdx && !isCorrect) {
+                    el.classList.add('incorrect');
+                }
+            });
+            
+            updateLevel();
+            updateStats();
+        }
+
+        function submitAllQuiz() {
+            let totalPoints = 0;
+            for (let i = 1; i <= 3; i++) {
+                if (gameState.quizAnswers[i] !== undefined) {
+                    totalPoints += Object.values(quizzes)[i - 1]?.points || 0;
+                }
+            }
+            
+            if (totalPoints > 0) {
+                alert(`Quiz submitted! You earned ${totalPoints} points overall!`);
+            }
+        }
+
+        function updateLevel() {
+            gameState.level = Math.floor(gameState.points / 100) + 1;
+        }
+
+        function updateStats() {
+            document.getElementById('total-points').textContent = gameState.points;
+            document.getElementById('current-level').textContent = gameState.level;
+            document.getElementById('quick-points').textContent = gameState.points;
+            document.getElementById('quick-level').textContent = gameState.level;
+            document.getElementById('user-points').textContent = gameState.points + ' pts';
+            
+            let rank = 'Rookie';
+            if (gameState.points > 1000) rank = 'Master';
+            else if (gameState.points > 500) rank = 'Expert';
+            else if (gameState.points > 200) rank = 'Cadet';
+            
+            document.getElementById('current-rank').textContent = rank;
+        }
+
+        function updateProgress() {
+            const handbookPercentage = gameState.handbookProgress;
+            const scenariosPercentage = (gameState.completedScenarios.length / 3) * 100;
+            const quizPercentage = (Object.keys(gameState.quizAnswers).length / 3) * 100;
+            
+            document.getElementById('handbook-progress').style.width = handbookPercentage + '%';
+            document.getElementById('handbook-percent').textContent = handbookPercentage + '%';
+            
+            document.getElementById('scenarios-progress').style.width = scenariosPercentage + '%';
+            document.getElementById('scenarios-percent').textContent = Math.round(scenariosPercentage) + '%';
+            
+            document.getElementById('quiz-progress').style.width = quizPercentage + '%';
+            document.getElementById('quiz-percent').textContent = Math.round(quizPercentage) + '%';
+        }
+
+        // Initialize
+        updateStats();
+        updateProgress();
+    </script>
+</body>
+</html>
