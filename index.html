@@ -7,7 +7,7 @@
     <style>
         :root {
             --color-primary: #0f9d58;
-            --color-primary-light: #0f9d58;
+            --color-primary-light: #16a86b;
             --color-success: #27ae60;
             --color-warning: #f39c12;
             --color-danger: #e74c3c;
@@ -42,7 +42,53 @@
             border-radius: 8px;
             margin-bottom: 30px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-height: 60px;
+        }
+
+        .logo-container {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            height: 60px;
+            width: auto;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 5px;
+        }
+
+        .logo-placeholder {
+            height: 60px;
+            width: 60px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 14px;
             text-align: center;
+            padding: 5px;
+        }
+
+        .title-container {
+            text-align: center;
+            flex-grow: 1;
         }
 
         header h1 {
@@ -84,6 +130,8 @@
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
+            width: 100%;
+            text-align: left;
         }
 
         .nav-item:hover {
@@ -323,46 +371,30 @@
             border-left: 4px solid var(--color-success);
         }
 
-        .alert-warning {
-            background: #fff3cd;
-            color: #856404;
-            border-left: 4px solid var(--color-warning);
-        }
-
         .alert-danger {
             background: #f8d7da;
             color: #721c24;
             border-left: 4px solid var(--color-danger);
         }
 
-        .section-title {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: var(--color-primary);
-            margin: 20px 0 10px 0;
-        }
-
-        .module-progress {
-            margin: 10px 0;
-            padding: 10px;
-            background: var(--color-bg);
-            border-radius: 5px;
-        }
-
-        .feedback-message {
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 5px;
-            font-weight: 600;
-        }
-
         @media (max-width: 1024px) {
             .main-grid {
                 grid-template-columns: 1fr;
             }
-            
             header h1 {
                 font-size: 1.8em;
+            }
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .logo-container {
+                position: relative;
+                margin-bottom: 15px;
+                justify-content: center;
+                left: auto;
+                transform: none;
+                top: auto;
             }
         }
     </style>
@@ -370,33 +402,30 @@
 <body>
     <div class="container">
         <header>
-            <h1>Cybersecurity Learning Simulator</h1>
-            <p>Master Cybercrime Investigation & Digital Forensics Through Interactive Scenarios</p>
+            <div class="header-content">
+                <div class="logo-container">
+                    <!-- Replace with your logo.png -->
+                    <img src="logo.png" alt="Cybersecurity Learning Simulator Logo" class="logo">
+                    <!-- Fallback if logo.png doesn't exist -->
+                    <div class="logo-placeholder hidden">LOGO</div>
+                </div>
+                <div class="title-container">
+                    <h1>Cybersecurity Learning Simulator</h1>
+                    <p>Master Cybercrime Investigation & Digital Forensics Through Interactive Scenarios</p>
+                </div>
+            </div>
         </header>
 
         <div class="main-grid">
-            <!-- Sidebar Navigation -->
             <div class="sidebar">
                 <h3>Modules</h3>
                 <div class="nav-item active" onclick="switchModule('handbook')">Handbook</div>
                 <div class="nav-item" onclick="switchModule('scenarios')">Scenarios</div>
                 <div class="nav-item" onclick="switchModule('quiz')">Quiz Challenge</div>
                 <div class="nav-item" onclick="switchModule('progress')">My Progress</div>
-                
-                <h3 style="margin-top: 30px;">Quick Stats</h3>
-                <div class="stat-item">
-                    <div class="stat-label">Points Earned</div>
-                    <div class="stat-value" id="quick-points">0</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-label">Level</div>
-                    <div class="stat-value" id="quick-level">1</div>
-                </div>
             </div>
 
-            <!-- Main Content Area -->
             <div class="content">
-                <!-- Handbook Section -->
                 <div id="handbook-section">
                     <h2>Cybersecurity Handbook</h2>
                     
@@ -445,13 +474,13 @@
                     </div>
 
                     <div class="scenario-card">
-                        <h3>3. Telecom Analysis & CDR/IPDR Investigation</h3>
+                        <h3>3. Telecom Analysis - CDR/IPDR Investigation</h3>
                         <p><strong>Per Police SOP:</strong></p>
                         <ul style="margin-left: 20px;">
                             <li>CDR (Call Detail Records): Phone calls, SMS, time, duration, cell tower location</li>
                             <li>IPDR (Internet Protocol Detail Records): Internet sessions, IP addresses accessed, websites visited</li>
                             <li>CAF (Customer Application Form): KYC details - Aadhaar, PAN, address, photo, alternate mobile</li>
-                            <li>CYCAPS: Cyber Crime Analysis & Profiling System - search linked FIRs, IMEI numbers, location data</li>
+                            <li>CYCAPS (Cyber Crime Analysis & Profiling System): search linked FIRs, IMEI numbers, location data</li>
                             <li>SMS Header Analysis: Identify actual telecom provider via header at smsheader.trai.gov.in</li>
                             <li>Day/Night Location Tracking: Cell tower data shows fraudster movement patterns vs ATM withdrawal locations</li>
                         </ul>
@@ -461,17 +490,16 @@
                         <h3>4. Financial Crime Handles - Money Trail Tracing</h3>
                         <p><strong>Police SOP - Key Evidence Collection:</strong></p>
                         <ul style="margin-left: 20px;">
-                            <li><strong>Bank Accounts:</strong> Request §91 CrPC - KYC, statement, debit/credit card delivery, ATM footage</li>
-                            <li><strong>UPI Transactions:</strong> Identify payment gateway (Google Pay=okaxis.ok*, PhonePe=ybl, Amazon=apl)</li>
+                            <li><strong>Bank Accounts:</strong> Request 91 CrPC - KYC, statement, debit/credit card delivery, ATM footage</li>
+                            <li><strong>UPI Transactions:</strong> Identify payment gateway (Google Pay:okaxis/ok, PhonePe:ybl, Amazon:apl)</li>
                             <li><strong>E-Wallets:</strong> Transaction history, recipient wallet ID, IP logs, linked bank accounts</li>
-                            <li><strong>Crypto Exchange:</strong> Blockchain analysis, wallet addresses, exchange platform details</li>
+                            <li><strong>Crypto Exchanges:</strong> Blockchain analysis, wallet addresses, exchange platform details</li>
                             <li><strong>ATM Withdrawals:</strong> CCTV footage, ATM location codes, linked card/account numbers</li>
                             <li><strong>Mule Account Indicators:</strong> Fake Aadhaar, recent KYC updates, e-KYC IP address mismatches</li>
                         </ul>
                     </div>
                 </div>
 
-                <!-- Scenarios Section -->
                 <div id="scenarios-section" class="hidden">
                     <h2>Real-World Investigation Scenarios (Police SOP)</h2>
                     
@@ -479,7 +507,7 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div>
                                 <h3>Scenario 1: Union Bank Phishing Fraud Investigation</h3>
-                                <p style="margin-top: 5px; color: #7f8c8d;"><strong>Victim:</strong> Rani Kumari, Karimnagar | <strong>Loss:</strong> ₹1,75,000 via UPI | <strong>Method:</strong> Phishing SMS with fake bank website. You must trace the money trail and identify the fraudster network.</p>
+                                <p style="margin-top: 5px; color: #7f8c8d;"><strong>Victim:</strong> Rani Kumari, Karimnagar <strong>Loss:</strong> ₹1,75,000 via UPI <strong>Method:</strong> Phishing SMS with fake bank website. You must trace the money trail and identify the fraudster network.</p>
                                 <div class="difficulty-indicator difficulty-hard">Hard Difficulty - Real Case</div>
                             </div>
                             <button class="btn btn-primary" onclick="startScenario(1)">Start Investigation</button>
@@ -489,7 +517,7 @@
                     <div class="scenario-card">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div>
-                                <h3>Scenario 2: SIM Card Spoofing & Telecom Tracing</h3>
+                                <h3>Scenario 2: SIM Card Spoofing - Telecom Tracing</h3>
                                 <p style="margin-top: 5px; color: #7f8c8d;"><strong>Incident:</strong> Fraudster used spoofed SIM ID "UNIONBNK" to send SMS. You must identify the telecom provider, request CDR/IPDR records, and locate the fraud source.</p>
                                 <div class="difficulty-indicator difficulty-medium">Medium Difficulty - Telecom Analysis</div>
                             </div>
@@ -500,8 +528,8 @@
                     <div class="scenario-card">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div>
-                                <h3>Scenario 3: Mule Account & Money Laundering Trail</h3>
-                                <p style="margin-top: 5px; color: #7f8c8d;"><strong>Challenge:</strong> Trace ₹1,75,000 through: Victim → Mule Account (Bihar) → UPI Wallet → Crypto Exchange → ATM Withdrawal. Identify KYC violations and laundering techniques.</p>
+                                <h3>Scenario 3: Mule Account - Money Laundering Trail</h3>
+                                <p style="margin-top: 5px; color: #7f8c8d;"><strong>Challenge:</strong> Trace ₹1,75,000 through Victim → Mule Account (Bihar) → UPI Wallet → Crypto Exchange → ATM Withdrawal. Identify KYC violations and laundering techniques.</p>
                                 <div class="difficulty-indicator difficulty-hard">Hard Difficulty - Financial Forensics</div>
                             </div>
                             <button class="btn btn-primary" onclick="startScenario(3)">Start Investigation</button>
@@ -514,7 +542,6 @@
                     </div>
                 </div>
 
-                <!-- Quiz Section -->
                 <div id="quiz-section" class="hidden">
                     <h2>Cybersecurity Knowledge Quiz</h2>
                     <p style="margin-bottom: 20px; color: #7f8c8d;">Test your cybersecurity knowledge. Each correct answer earns you points and levels up your expertise!</p>
@@ -551,7 +578,6 @@
                     <button class="btn btn-primary" style="margin-top: 20px; width: 100%;" onclick="submitAllQuiz()">Submit All Answers</button>
                 </div>
 
-                <!-- Progress Section -->
                 <div id="progress-section" class="hidden">
                     <h2>Your Progress & Achievements</h2>
                     
@@ -592,14 +618,14 @@
                         <span class="badge badge-gold">Scenario Expert (Complete all)</span>
                     </div>
 
-                    <h3 style="margin-top: 30px;">Leaderboard (Top Officers)</h3>
+                    <h3 style="margin-top: 30px;">Leaderboard (Top Participants)</h3>
                     <div class="leaderboard">
                         <div class="leaderboard-item">
-                            <div><span class="leaderboard-rank">1.</span> Officer Sharma</div>
+                            <div><span class="leaderboard-rank">1.</span> Participant Sharma</div>
                             <div class="leaderboard-score">850 pts</div>
                         </div>
                         <div class="leaderboard-item">
-                            <div><span class="leaderboard-rank">2.</span> Officer Kumar</div>
+                            <div><span class="leaderboard-rank">2.</span> Participant Kumar</div>
                             <div class="leaderboard-score">720 pts</div>
                         </div>
                         <div class="leaderboard-item">
@@ -607,16 +633,15 @@
                             <div class="leaderboard-score" id="user-points">0 pts</div>
                         </div>
                         <div class="leaderboard-item">
-                            <div><span class="leaderboard-rank">4.</span> Officer Patel</div>
+                            <div><span class="leaderboard-rank">4.</span> Participant Patel</div>
                             <div class="leaderboard-score">450 pts</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Stats Panel -->
             <div class="stats-panel">
-                <h3>Officer Profile</h3>
+                <h3>User Profile</h3>
                 <div class="stat-item">
                     <div class="stat-label">Total Points</div>
                     <div class="stat-value" id="total-points">0</div>
@@ -627,13 +652,13 @@
                 </div>
                 <div class="stat-item">
                     <div class="stat-label">Rank</div>
-                    <div class="stat-value" id="current-rank">Rookie</div>
+                    <div class="stat-value" id="current-rank">Beginner</div>
                 </div>
 
                 <h3 style="margin-top: 25px;">Rank System</h3>
                 <div style="font-size: 0.9em; color: #7f8c8d;">
-                    <p style="margin: 10px 0;"><strong>0-200 pts:</strong> Rookie</p>
-                    <p style="margin: 10px 0;"><strong>201-500 pts:</strong> Cadet</p>
+                    <p style="margin: 10px 0;"><strong>0-200 pts:</strong> Beginner</p>
+                    <p style="margin: 10px 0;"><strong>201-500 pts:</strong> Intermediate</p>
                     <p style="margin: 10px 0;"><strong>501-1000 pts:</strong> Expert</p>
                     <p style="margin: 10px 0;"><strong>1001+ pts:</strong> Master</p>
                 </div>
@@ -647,7 +672,6 @@
     </div>
 
     <script>
-        // Game State
         let gameState = {
             points: 0,
             level: 1,
@@ -656,21 +680,19 @@
             handbookProgress: 25
         };
 
-        // Quiz Data
         const quizzes = {
             1: { correct: 0, points: 20 },
             2: { correct: 1, points: 20 },
             3: { correct: 2, points: 20 }
         };
 
-        // Scenario Data - Based on Police SOP & Real Cases
         const scenarios = {
             1: {
                 title: "Union Bank Phishing Fraud - Money Trail Investigation",
-                desc: "Rani Kumari (Karimnagar) received SMS: 'Bank account suspended. Verify immediately' with link unionbankverify.in. She entered: account number, mobile, DOB, and OTP. ₹1,75,000 transferred via UPI. 3 hours later she filed FIR.",
+                desc: "Rani Kumari (Karimnagar) received SMS: 'Bank account suspended. Verify immediately' with link unionbankverify.in. She entered account number, mobile, DOB, and OTP. ₹1,75,000 transferred via UPI. 3 hours later she filed FIR.",
                 choices: [
                     {
-                        text: "A) File FIR immediately citing IPC §420, IT Act §66(c) - phishing & identity theft",
+                        text: "A) File FIR immediately citing IPC 420, IT Act 66c - phishing identity theft",
                         correct: true,
                         feedback: "CORRECT! Per SOP: File FIR within 3 hours with correct IPC/IT sections. This preserves timeline and jurisdiction.",
                         points: 40
@@ -684,7 +706,7 @@
                     {
                         text: "C) Interview victim first, file FIR later",
                         correct: false,
-                        feedback: "WRONG. FIR first (opens investigation), interview during S2 phase per SOP.",
+                        feedback: "WRONG. FIR first opens investigation, interview during S2 phase per SOP.",
                         points: 15
                     },
                     {
@@ -696,7 +718,7 @@
                 ]
             },
             2: {
-                title: "SMS Spoofing & Telecom Analysis - Identifying Fraudster SIM",
+                title: "SMS Spoofing - Telecom Analysis (Identifying Fraudster SIM)",
                 desc: "SMS header analysis shows sender ID spoofed as 'UNIONBNK' but routed through VoIP. You must identify the actual telecom provider, request CDR/IPDR, and trace the SIM card used.",
                 choices: [
                     {
@@ -708,25 +730,25 @@
                     {
                         text: "B) Check SMS header via TRAI portal (smsheader.trai.gov.in) to identify actual telecom provider",
                         correct: true,
-                        feedback: "CORRECT! Per SOP: SMS header reveals '2-char prefix' = telecom provider & state. Then request that provider's CDR/IPDR.",
+                        feedback: "CORRECT! Per SOP: SMS header reveals 2-char prefix (telecom provider + state). Then request that provider's CDR/IPDR.",
                         points: 35
                     },
                     {
                         text: "C) Contact NPCI to reverse the UPI transaction",
                         correct: false,
-                        feedback: "UPI reversal is separate. First identify fraudster via telecom traces.",
+                        feedback: "WRONG. UPI reversal is separate. First identify fraudster via telecom traces.",
                         points: 0
                     },
                     {
                         text: "D) Request CCTV from Union Bank's server location",
                         correct: false,
-                        feedback: "Bank CCTV useful later for ATM withdrawals, but SIM origin comes first.",
+                        feedback: "WRONG. Bank CCTV useful later for ATM withdrawals, but SIM origin comes first.",
                         points: 10
                     }
                 ]
             },
             3: {
-                title: "Money Trail & Mule Account Forensics - Breaking the Laundering Chain",
+                title: "Money Trail - Mule Account Forensics (Breaking the Laundering Chain)",
                 desc: "Trace the ₹1,75,000: Victim → Mule in Bihar (account opened with fake Aadhaar) → UPI wallet → crypto exchange → ATM. You have 7 turns. Mistakes delay fund freeze.",
                 choices: [
                     {
@@ -742,7 +764,7 @@
                         points: 35
                     },
                     {
-                        text: "C) Request wallet provider (PhonePe/Google Pay) transaction details & linked bank accounts",
+                        text: "C) Request wallet provider (PhonePe/Google Pay) transaction details + linked bank accounts",
                         correct: true,
                         feedback: "CORRECT! Identify secondary laundering. UPI wallet → crypto exchange shows intent to hide.",
                         points: 40
@@ -750,7 +772,7 @@
                     {
                         text: "D) All of the above - investigate all 3 paths simultaneously",
                         correct: true,
-                        feedback: "BEST ANSWER! In competitive 2-player game: Officer who pursues ALL trails in parallel wins (fund freeze + suspect ID). Sequential is slower.",
+                        feedback: "BEST ANSWER! In competitive 2-player game: Officer who pursues ALL trails in parallel wins fund freeze + suspect ID. Sequential is slower.",
                         points: 50
                     }
                 ]
@@ -861,14 +883,12 @@
         function updateStats() {
             document.getElementById('total-points').textContent = gameState.points;
             document.getElementById('current-level').textContent = gameState.level;
-            document.getElementById('quick-points').textContent = gameState.points;
-            document.getElementById('quick-level').textContent = gameState.level;
             document.getElementById('user-points').textContent = gameState.points + ' pts';
             
-            let rank = 'Rookie';
+            let rank = 'Beginner';
             if (gameState.points > 1000) rank = 'Master';
             else if (gameState.points > 500) rank = 'Expert';
-            else if (gameState.points > 200) rank = 'Cadet';
+            else if (gameState.points > 200) rank = 'Intermediate';
             
             document.getElementById('current-rank').textContent = rank;
         }
@@ -888,7 +908,30 @@
             document.getElementById('quiz-percent').textContent = Math.round(quizPercentage) + '%';
         }
 
-        // Initialize
+        // Logo handling - check if logo.png exists
+        window.addEventListener('load', function() {
+            const logoImg = document.querySelector('.logo');
+            const logoPlaceholder = document.querySelector('.logo-placeholder');
+            
+            // Check if the logo image loads successfully
+            logoImg.onerror = function() {
+                this.style.display = 'none';
+                logoPlaceholder.classList.remove('hidden');
+            };
+            
+            logoImg.onload = function() {
+                logoPlaceholder.classList.add('hidden');
+            };
+            
+            // Trigger check
+            if (logoImg.complete) {
+                if (logoImg.naturalHeight === 0) {
+                    logoImg.style.display = 'none';
+                    logoPlaceholder.classList.remove('hidden');
+                }
+            }
+        });
+
         updateStats();
         updateProgress();
     </script>
