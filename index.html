@@ -35,36 +35,22 @@
             padding: 20px;
         }
 
-        header {
-            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
-            color: var(--color-white);
-            padding: 30px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            position: relative;
-        }
-
-        .header-content {
+        .header-wrapper {
             display: flex;
             align-items: center;
-            justify-content: center;
-            position: relative;
-            min-height: 60px;
+            margin-bottom: 30px;
+            gap: 20px;
         }
 
         .logo-container {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
+            flex-shrink: 0;
             display: flex;
             align-items: center;
             gap: 15px;
         }
 
         .logo {
-            height: 60px;
+            height: 70px;
             width: auto;
             border-radius: 4px;
             background-color: rgba(255, 255, 255, 0.1);
@@ -72,31 +58,46 @@
         }
 
         .logo-placeholder {
-            height: 60px;
-            width: 60px;
-            background-color: rgba(255, 255, 255, 0.2);
+            height: 70px;
+            width: 70px;
+            background-color: #e0e0e0;
             border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            color: white;
-            font-size: 14px;
+            color: #333;
+            font-size: 12px;
             text-align: center;
             padding: 5px;
+            border: 2px solid #ccc;
         }
 
-        .title-container {
-            text-align: center;
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--color-primary);
+        }
+
+        .header-banner {
             flex-grow: 1;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            color: var(--color-white);
+            padding: 25px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        .header-banner h1 {
+            font-size: 2.2em;
+            margin-bottom: 5px;
         }
 
-        header p {
+        .header-banner p {
             font-size: 1.1em;
             opacity: 0.95;
         }
@@ -381,40 +382,48 @@
             .main-grid {
                 grid-template-columns: 1fr;
             }
-            header h1 {
-                font-size: 1.8em;
-            }
-            .header-content {
+            .header-wrapper {
                 flex-direction: column;
                 text-align: center;
             }
             .logo-container {
-                position: relative;
-                margin-bottom: 15px;
                 justify-content: center;
-                left: auto;
-                transform: none;
-                top: auto;
+                margin-bottom: 15px;
+            }
+            .header-banner h1 {
+                font-size: 1.8em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-banner h1 {
+                font-size: 1.5em;
+            }
+            .header-banner p {
+                font-size: 1em;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <div class="header-content">
-                <div class="logo-container">
-                    <!-- Replace with your logo.png -->
-                    <img src="logo.png" alt="Cybersecurity Learning Simulator Logo" class="logo">
-                    <!-- Fallback if logo.png doesn't exist -->
-                    <div class="logo-placeholder hidden">LOGO</div>
+        <!-- Header with Logo separate from Green Banner -->
+        <div class="header-wrapper">
+            <div class="logo-container">
+                <!-- Replace with your logo.png -->
+                <img src="logo.png" alt="Cybersecurity Learning Simulator Logo" class="logo">
+                <!-- Fallback if logo.png doesn't exist -->
+                <div class="logo-placeholder hidden">
+                    ZeroZota
                 </div>
-                <div class="title-container">
-                    <h1>Cybersecurity Learning Simulator</h1>
-                    <p>Master Cybercrime Investigation & Digital Forensics Through Interactive Scenarios</p>
-                </div>
+                <div class="logo-text">ZeroZota</div>
             </div>
-        </header>
+            
+            <div class="header-banner">
+                <h1>Cybersecurity Learning Simulator</h1>
+                <p>Master Cybercrime Investigation & Digital Forensics Through Interactive Scenarios</p>
+            </div>
+        </div>
 
         <div class="main-grid">
             <div class="sidebar">
@@ -584,10 +593,10 @@
                     <div class="module-progress">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                             <strong>Handbook Reading Progress</strong>
-                            <span id="handbook-percent">0%</span>
+                            <span id="handbook-percent">25%</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" id="handbook-progress" style="width: 0%;"></div>
+                            <div class="progress-fill" id="handbook-progress" style="width: 25%;"></div>
                         </div>
                     </div>
 
@@ -618,22 +627,22 @@
                         <span class="badge badge-gold">Scenario Expert (Complete all)</span>
                     </div>
 
-                    <h3 style="margin-top: 30px;">Leaderboard </h3>
+                    <h3 style="margin-top: 30px;">Leaderboard (Top Participants)</h3>
                     <div class="leaderboard">
                         <div class="leaderboard-item">
-                            <div><span class="leaderboard-rank">1.</span> Sharma</div>
+                            <div><span class="leaderboard-rank">1.</span> Participant Sharma</div>
                             <div class="leaderboard-score">850 pts</div>
                         </div>
                         <div class="leaderboard-item">
-                            <div><span class="leaderboard-rank">2.</span> Kumar</div>
+                            <div><span class="leaderboard-rank">2.</span> Participant Kumar</div>
                             <div class="leaderboard-score">720 pts</div>
                         </div>
                         <div class="leaderboard-item">
-                            <div><span class="leaderboard-rank">3.</span> Dinesh</div>
+                            <div><span class="leaderboard-rank">3.</span> You</div>
                             <div class="leaderboard-score" id="user-points">0 pts</div>
                         </div>
                         <div class="leaderboard-item">
-                            <div><span class="leaderboard-rank">4.</span> Patel</div>
+                            <div><span class="leaderboard-rank">4.</span> Participant Patel</div>
                             <div class="leaderboard-score">450 pts</div>
                         </div>
                     </div>
@@ -937,5 +946,3 @@
     </script>
 </body>
 </html>
-
-
