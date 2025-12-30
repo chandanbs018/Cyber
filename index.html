@@ -46,37 +46,12 @@
             flex-shrink: 0;
             display: flex;
             align-items: center;
-            gap: 15px;
         }
 
         .logo {
             height: 70px;
             width: auto;
             border-radius: 4px;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 5px;
-        }
-
-        .logo-placeholder {
-            height: 70px;
-            width: 70px;
-            background-color: #e0e0e0;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #333;
-            font-size: 12px;
-            text-align: center;
-            padding: 5px;
-            border: 2px solid #ccc;
-        }
-
-        .logo-text {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--color-primary);
         }
 
         .header-banner {
@@ -410,13 +385,7 @@
         <!-- Header with Logo separate from Green Banner -->
         <div class="header-wrapper">
             <div class="logo-container">
-                <!-- Replace with your logo.png -->
                 <img src="logo.png" alt="Cybersecurity Learning Simulator Logo" class="logo">
-                <!-- Fallback if logo.png doesn't exist -->
-                <div class="logo-placeholder hidden">
-                    ZeroZota
-                </div>
-                <div class="logo-text">ZeroZota</div>
             </div>
             
             <div class="header-banner">
@@ -916,30 +885,6 @@
             document.getElementById('quiz-progress').style.width = quizPercentage + '%';
             document.getElementById('quiz-percent').textContent = Math.round(quizPercentage) + '%';
         }
-
-        // Logo handling - check if logo.png exists
-        window.addEventListener('load', function() {
-            const logoImg = document.querySelector('.logo');
-            const logoPlaceholder = document.querySelector('.logo-placeholder');
-            
-            // Check if the logo image loads successfully
-            logoImg.onerror = function() {
-                this.style.display = 'none';
-                logoPlaceholder.classList.remove('hidden');
-            };
-            
-            logoImg.onload = function() {
-                logoPlaceholder.classList.add('hidden');
-            };
-            
-            // Trigger check
-            if (logoImg.complete) {
-                if (logoImg.naturalHeight === 0) {
-                    logoImg.style.display = 'none';
-                    logoPlaceholder.classList.remove('hidden');
-                }
-            }
-        });
 
         updateStats();
         updateProgress();
